@@ -1,0 +1,2732 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tf-Idf and Cosine similarity | Seeking Wisdom</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://janav.wordpress.com/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="https://s0.wp.com/wp-content/themes/pub/expound/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+
+<link rel="alternate" type="application/rss+xml" title="Seeking Wisdom » Feed" href="https://janav.wordpress.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Seeking Wisdom » Comments Feed" href="https://janav.wordpress.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Seeking Wisdom » Tf-Idf and Cosine similarity Comments Feed" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/feed/">
+<script type="text/javascript">
+/* <![CDATA[ */
+function addLoadEvent(func){var oldonload=window.onload;if(typeof window.onload!='function'){window.onload=func;}else{window.onload=function(){oldonload();func();}}}
+/* ]]> */
+</script>
+<link rel="stylesheet" id="all-css-0" href="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/a.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var LoggedOutFollow = {"invalid_email":"Your subscription did not succeed, please try again with a valid email address."};
+/* ]]> */
+</script><link href="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/lite_css_b.css" type="text/css" rel="stylesheet" id="lite-css-list">
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/a_004"></script>
+<link rel="stylesheet" id="all-css-0" href="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/style.css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563g&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://janav.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Netflix knows what I like" href="https://janav.wordpress.com/2013/10/23/netflix-knows-what-i-like/">
+<link rel="next" title="Mastermind" href="https://janav.wordpress.com/2013/11/02/mastermind/">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/">
+<link rel="shortlink" href="http://wp.me/pzB0n-R9">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=https%3A%2F%2Fjanav.wordpress.com%2F2013%2F10%2F27%2Ftf-idf-and-cosine-similarity%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=https%3A%2F%2Fjanav.wordpress.com%2F2013%2F10%2F27%2Ftf-idf-and-cosine-similarity%2F&amp;for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tf-Idf and Cosine similarity">
+<meta property="og:url" content="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/">
+<meta property="og:description" content="In the year 1998 Google handled 9800 average search queries every day. In 2012 this number shot up to 5.13 billion average searches per day. The graph given below shows this astronomical growth. Ye...">
+<meta property="article:published_time" content="2013-10-28T02:10:40+00:00">
+<meta property="article:modified_time" content="2014-04-15T02:33:57+00:00">
+<meta property="og:site_name" content="Seeking Wisdom">
+<meta property="og:image" content="https://janav.files.wordpress.com/2013/10/cosinesimiarlity.jpeg?w=700">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:site" content="@jvembuna">
+<meta name="twitter:image" content="https://janav.files.wordpress.com/2013/10/googlesearchperday.png?w=240">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@jvembuna">
+<meta property="fb:app_id" content="249643311490">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+<link rel="shortcut icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="icon" type="image/x-icon" href="https://s2.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="apple-touch-icon-precomposed" href="https://s0.wp.com/i/webclip.png">
+<link rel="openid.server" href="https://janav.wordpress.com/?openidserver=1">
+<link rel="openid.delegate" href="https://janav.wordpress.com/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://janav.wordpress.com/osd.xml" title="Seeking Wisdom">
+<link rel="search" type="application/opensearchdescription+xml" href="https://wordpress.com/opensearch.xml" title="WordPress.com">
+<meta name="application-name" content="Seeking Wisdom"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-tooltip" content="Mastering the best of what other people have already figured out."><meta name="msapplication-task" content="name=Subscribe;action-uri=https://janav.wordpress.com/feed/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="title" content="Tf-Idf and Cosine similarity | Seeking Wisdom on WordPress.com">
+<meta name="description" content="In the year 1998 Google handled 9800 average search queries every day. In 2012 this number shot up to 5.13 billion average searches per day. The graph given below shows this astronomical growth. Year Average Search per day 1998 9800 2000 60000000 2007 1200000000 2008 1745000000 2009 2610000000 2010 3627000000 2011 4717000000 2012 5134000000 The…">
+		<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/amzn_ads.js"></script>
+		<script type="text/javascript">
+		try { amznads.getAds("3033"); } catch(e) { /* ignore */ }
+		</script><script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/bid"></script>
+		<script type="text/javascript">
+		var a9_p = amznads.getKeys(),
+		_ipw_custom = {
+			wordAds: '0',
+			adSafe: '0',
+			domain: 'janav.wordpress.com',
+			pageURL: 'https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/'
+		};
+		if("undefined"!=typeof a9_p&&""!=a9_p&&null!==a9_p&&"[object Array]"===Object.prototype.toString.call(a9_p)){var a="",b=0,c=a9_p.length;a9_p.sort();for(var d=0;d<c;d++){a9_p[d-b]=a9_p[d-b].replace(/a1x6p/,"a160x600p");var e=a9_p[d-b].split("p");e[0]==a&&(a9_p.splice(d-b,1),b++);a=e[0]}_ipw_custom.amznPay=a9_p};document.close();
+		</script>		<!-- IPONWEB header script -->
+		<script type="text/javascript">
+			window.__ATA = {
+				scriptSrc: '//s.pubmine.com/showad.js',
+				slotPrefix: 'automattic-id-',
+				initAd: function(o) {
+					var o = o || {},
+						g = window,
+						d = g.document,
+						wr = d.write,
+						id = g.__ATA.id();
+					wr.call(d, '<div id="' + id + '" data-section="' + (o.sectionId || 0) + '"' + (o.type ? ('data-type="' + o.type + '"') : '') + ' ' + (o.forcedUrl ? ('data-forcedurl="' + o.forcedUrl + '"') : '') + ' style="width:' + (o.width || 0) + 'px; height:' + (o.height || 0) + 'px;">');
+					g.__ATA.displayAd(id);
+					wr.call(d, '</div>');
+				},
+				displayAd: function(id) {
+					window.__ATA.ids = window.__ATA.ids || {};
+					window.__ATA.ids[id] = 1;
+				},
+				customParams: _ipw_custom,
+				id: function() {
+					return window.__ATA.slotPrefix + (parseInt(Math.random() * 10000, 10) + 1 + (new Date()).getMilliseconds());
+				}
+			};
+			(function(d, ata) {
+				var pr = "https:" === d.location.protocol ? "https:" : "http:",
+					src = pr + ata.scriptSrc,
+					st = "text/javascript";
+				d.write('<scr' + 'ipt type="' + st + '" src="' + src + '"><\/scr' + 'ipt>');
+			})(window.document, window.__ATA);
+		</script><script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/showad.js"></script>
+		<script type="text/javascript">
+		jQuery(window).ready(function () {
+			jQuery("a.wpa-about").text("About these ads");
+		});
+		</script><link href="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/shCore.css" type="text/css" rel="stylesheet"><link href="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/shThemeDefault.css" type="text/css" rel="stylesheet"><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script type="text/javascript">
+	window.google_analytics_uacct = "UA-52447-2";
+</script>
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-52447-2']);
+	_gaq.push(['_setDomainName', 'wordpress.com']);
+	_gaq.push(['_initData']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})();
+</script><script src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/ga.js" async="" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" id="gravatar-card-css" href="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/hovercard.css"><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/services.css"><script src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/button.js" async="" charset="utf-8" type="text/javascript"></script></head>
+
+<body class="single single-post postid-3295 single-format-standard mp6 customizer-styles-applied highlander-enabled highlander-light">
+<div id="page" class="hfeed site">
+		<header id="masthead" class="site-header" role="banner">
+		<div class="site-branding">
+			<a href="https://janav.wordpress.com/" class="wrapper-link">
+				</a><div class="site-title-group"><a href="https://janav.wordpress.com/" class="wrapper-link">
+					</a><h1 class="site-title"><a href="https://janav.wordpress.com/" class="wrapper-link"></a><a href="https://janav.wordpress.com/" title="Seeking Wisdom" rel="home">Seeking Wisdom</a></h1>
+					<h2 class="site-description">Mastering the best of what other people have already figured out.</h2>
+				</div>
+			
+		</div>
+
+		<nav id="site-navigation" class="navigation-main" role="navigation">
+			<h1 class="menu-toggle">Menu</h1>
+			<div class="screen-reader-text skip-link"><a href="#content" title="Skip to content">Skip to content</a></div>
+
+			<div class="menu"><ul><li><a href="https://janav.wordpress.com/">Home</a></li><li class="page_item page-item-2"><a href="https://janav.wordpress.com/about/">About</a></li></ul></div>
+					</nav><!-- #site-navigation -->
+	</header><!-- #masthead -->
+
+	<div id="main" class="site-main">
+
+	<div id="primary" class="content-area">
+		<div id="content" class="site-content" role="main">
+
+		
+			
+<article id="post-3295" class="post-3295 post type-post status-publish format-standard hentry category-computer-science tag-computer-science tag-mental-models tag-recommender-systems">
+	<header class="entry-header">
+		<h1 class="entry-title">Tf-Idf and Cosine similarity</h1>
+
+		<div class="entry-meta">
+			<a class="author" rel="author" href="https://janav.wordpress.com/author/jvembuna/">Jana Vembunarayanan</a> / <a class="entry-date" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/">October 27, 2013</a>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p>In the year 1998 <a href="http://www.statisticbrain.com/google-searches/" target="_blank">Google</a>
+ handled 9800 average search queries every day. In 2012 this number shot
+ up to 5.13 billion average searches per day. The graph given below 
+shows this astronomical growth.</p>
+<table border="0" width="167" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="65"><strong>Year</strong></td>
+<td width="102"><strong>Average Search per day</strong></td>
+</tr>
+<tr>
+<td align="right" height="15">1998</td>
+<td align="right">9800</td>
+</tr>
+<tr>
+<td align="right" height="15">2000</td>
+<td align="right">60000000</td>
+</tr>
+<tr>
+<td align="right" height="15">2007</td>
+<td align="right">1200000000</td>
+</tr>
+<tr>
+<td align="right" height="15">2008</td>
+<td align="right">1745000000</td>
+</tr>
+<tr>
+<td align="right" height="15">2009</td>
+<td align="right">2610000000</td>
+</tr>
+<tr>
+<td align="right" height="15">2010</td>
+<td align="right">3627000000</td>
+</tr>
+<tr>
+<td align="right" height="15">2011</td>
+<td align="right">4717000000</td>
+</tr>
+<tr>
+<td align="right" height="15">2012</td>
+<td align="right">5134000000</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://janav.files.wordpress.com/2013/10/googlesearchperday.png"><img class="alignnone size-large wp-image-3300" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/googlesearchperday.png" alt="googlesearchperday" height="288" width="700"></a></p>
+<p>The major reason for google’s success is because of its pageRank 
+algorithm. PageRank determines how trustworthy and reputable a given 
+website is. But there is also another part. The input query entered by 
+the user should be used to match the relevant documents and score them. 
+In this post I will focus on the second part. I have created 3 documents
+ to show how this works. Take some time to go through them.</p>
+<pre><strong>Document 1</strong>: The game of life is a game of everlasting learning
+<strong>Document 2</strong>: The unexamined life is not worth living
+<strong>Document 3</strong>: Never stop learning</pre>
+<p>Let us imagine that you are doing a search on these documents with the following query: <strong>life learning</strong></p>
+<p>The query is a&nbsp;free text query. It means&nbsp;a query in which 
+the terms of the query are typed freeform into the search interface, 
+without any connecting search operators.</p>
+<p>Let us go over each step in detail to see how it all works.</p>
+<h2>Step 1: Term Frequency (TF)</h2>
+<p>Term Frequency also known as TF measures the number of times a term 
+(word) occurs in a document. Given below are the terms and their 
+frequency on each of the document.</p>
+<p><span style="color:#339966;"><strong>TF for Document 1</strong></span></p>
+<table border="0" width="713" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="65"><strong>Document1</strong></td>
+<td width="65"><strong>the</strong></td>
+<td width="65"><strong>game</strong></td>
+<td width="65"><strong>of</strong></td>
+<td width="65"><strong>life</strong></td>
+<td width="65"><strong>is</strong></td>
+<td width="65"><strong>a</strong></td>
+<td width="65"><strong>everlasting</strong></td>
+<td width="65"><strong>learning</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>Term Frequency</strong></td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color:#339966;"><strong>TF for Document 2</strong></span></p>
+<table border="0" width="648" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="65"><strong>Document2</strong></td>
+<td width="65"><strong>the</strong></td>
+<td width="65"><strong>unexamined</strong></td>
+<td width="65"><strong>life</strong></td>
+<td width="65"><strong>is</strong></td>
+<td width="65"><strong>not</strong></td>
+<td width="65"><strong>worth</strong></td>
+<td width="65"><strong>living</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>Term Frequency</strong></td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color:#339966;"><strong>TF for Document 3</strong></span></p>
+<table border="0" width="388" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="65"><strong>Document3</strong></td>
+<td width="65"><strong>never</strong></td>
+<td width="65"><strong>stop</strong></td>
+<td width="65"><strong>learning</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>Term Frequency</strong></td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>In reality each document will be of different size. On a large 
+document the frequency of the terms will be much higher than the smaller
+ ones. Hence we need to <strong>normalize</strong> the document based on
+ its size. A simple trick is to divide the term frequency by the total 
+number of terms. For example in Document 1 the term <strong>game</strong> occurs <strong>two</strong> times. The total number of terms in the document is <strong>10</strong>. Hence the normalized term frequency is <strong>2 / 10 = 0.2</strong>. Given below are the normalized term frequency for all the documents.</p>
+<p><span style="color:#008000;"><strong>Normalized TF for Document 1</strong></span></p>
+<table border="0" width="713" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="65"><strong>Document1</strong></td>
+<td width="65"><strong>the</strong></td>
+<td width="65"><strong>game</strong></td>
+<td width="65"><strong>of</strong></td>
+<td width="65"><strong>life</strong></td>
+<td width="65"><strong>is</strong></td>
+<td width="65"><strong>a</strong></td>
+<td width="65"><strong>everlasting</strong></td>
+<td width="65"><strong>learning</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>Normalized TF</strong></td>
+<td align="right">0.1</td>
+<td align="right">0.2</td>
+<td align="right">0.2</td>
+<td align="right">0.1</td>
+<td align="right">0.1</td>
+<td align="right">0.1</td>
+<td align="right">0.1</td>
+<td align="right">0.1</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color:#008000;"><strong>Normalized TF for Document 2</strong></span></p>
+<table border="0" width="648" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="65"><strong>Document2</strong></td>
+<td width="65"><strong>the</strong></td>
+<td width="65"><strong>unexamined</strong></td>
+<td width="65"><strong>life</strong></td>
+<td width="65"><strong>is</strong></td>
+<td width="65"><strong>not</strong></td>
+<td width="65"><strong>worth</strong></td>
+<td width="65"><strong>living</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>Normalized TF</strong></td>
+<td align="right">0.142857</td>
+<td align="right">0.142857</td>
+<td align="right">0.142857</td>
+<td align="right">0.142857</td>
+<td align="right">0.142857</td>
+<td align="right">0.142857</td>
+<td align="right">0.142857</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color:#008000;"><strong>Normalized TF for Document 3</strong></span></p>
+<table border="0" width="388" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="65"><strong>Document3</strong></td>
+<td width="65"><strong>never</strong></td>
+<td width="65"><strong>stop</strong></td>
+<td width="65"><strong>learning</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>Normalized TF</strong></td>
+<td align="right">0.333333</td>
+<td align="right">0.333333</td>
+<td align="right">0.333333</td>
+</tr>
+</tbody>
+</table>
+<p>Given below is the code in python which will do the normalized TF calculation.</p>
+<div><div id="highlighter_772495" class="syntaxhighlighter  python"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="python keyword">def</code> <code class="python plain">termFrequency(term, document):</code></div><div class="line number2 index1 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">normalizeDocument </code><code class="python keyword">=</code> <code class="python plain">document.lower().split()</code></div><div class="line number3 index2 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">return</code> <code class="python plain">normalizeDocument.count(term.lower()) </code><code class="python keyword">/</code> <code class="python functions">float</code><code class="python plain">(</code><code class="python functions">len</code><code class="python plain">(normalizeDocument))</code></div></div></td></tr></tbody></table></div></div>
+<h2>Step 2: Inverse Document Frequency (IDF)</h2>
+<p>The main purpose of doing a search is to find out <strong>relevant</strong> <strong>documents</strong>
+ matching the query. In the first step all terms are considered equally 
+important. In fact certain terms that occur too frequently have little 
+power in determining the relevance. We need a way to <strong>weigh down</strong>
+ the effects of too frequently occurring terms. Also the terms that 
+occur less in the document can be more relevant. We need a way to <strong>weigh up</strong> the effects of less frequently occurring terms. <a title="Logarithms in real&nbsp;life" href="https://janav.wordpress.com/2013/09/29/logarithms-in-real-life/" target="_blank">Logarithms</a> helps us to solve this problem.</p>
+<p>Let us compute IDF for the term <strong>game</strong></p>
+<pre>IDF(<strong>game</strong>) = 1 + log<sub>e</sub>(Total Number Of Documents / Number Of Documents with term <strong>game</strong> in it)
+
+There are 3 documents in all = Document1, Document2, Document3
+The term game appears in Document1
+
+IDF(<strong>game</strong>) = 1 + log<sub>e</sub>(3 / 1)
+          = 1 + 1.098726209
+          = 2.098726209</pre>
+<p>Given below is the IDF for terms occurring in all the documents. Since the terms: <strong>the, life, is, learning</strong> occurs in 2 out of 3 documents they have a lower score compared to the other terms that appear in only one document.</p>
+<table border="0" width="233" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="156"><strong>Terms</strong></td>
+<td width="77"><strong>IDF</strong></td>
+</tr>
+<tr>
+<td height="15">the</td>
+<td align="right">1.405507153</td>
+</tr>
+<tr>
+<td height="15">game</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">of</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">life</td>
+<td align="right">1.405507153</td>
+</tr>
+<tr>
+<td height="15">is</td>
+<td align="right">1.405507153</td>
+</tr>
+<tr>
+<td height="15">a</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">everlasting</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">learning</td>
+<td align="right">1.405507153</td>
+</tr>
+<tr>
+<td height="15">unexamined</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">not</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">worth</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">living</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">never</td>
+<td align="right">2.098726209</td>
+</tr>
+<tr>
+<td height="15">stop</td>
+<td align="right">2.098726209</td>
+</tr>
+</tbody>
+</table>
+<p>Given below is the python code to calculate IDF</p>
+<div><div id="highlighter_432511" class="syntaxhighlighter  python"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="python keyword">def</code> <code class="python plain">inverseDocumentFrequency(term, allDocuments):</code></div><div class="line number2 index1 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">numDocumentsWithThisTerm </code><code class="python keyword">=</code> <code class="python value">0</code></div><div class="line number3 index2 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">for</code> <code class="python plain">doc </code><code class="python keyword">in</code> <code class="python plain">allDocuments:</code></div><div class="line number4 index3 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">if</code> <code class="python plain">term.lower() </code><code class="python keyword">in</code> <code class="python plain">allDocuments[doc].lower().split():</code></div><div class="line number5 index4 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python plain">numDocumentsWithThisTerm </code><code class="python keyword">=</code> <code class="python plain">numDocumentsWithThisTerm </code><code class="python keyword">+</code> <code class="python value">1</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">if</code> <code class="python plain">numDocumentsWithThisTerm &gt; </code><code class="python value">0</code><code class="python plain">:</code></div><div class="line number8 index7 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">return</code> <code class="python value">1.0</code> <code class="python keyword">+</code> <code class="python plain">log(</code><code class="python functions">float</code><code class="python plain">(</code><code class="python functions">len</code><code class="python plain">(allDocuments)) </code><code class="python keyword">/</code> <code class="python plain">numDocumentsWithThisTerm)</code></div><div class="line number9 index8 alt2"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">else</code><code class="python plain">:</code></div><div class="line number10 index9 alt1"><code class="python spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="python keyword">return</code> <code class="python value">1.0</code></div></div></td></tr></tbody></table></div></div>
+<h2>Step 3: TF * IDF</h2>
+<p>Remember we are trying to find out relevant documents for the query:&nbsp;<strong>life learning</strong></p>
+<p>For each term in the query multiply its normalized term frequency with its IDF on each document. In Document1 for the term <strong>life</strong> the normalized term frequency is 0.1 and its IDF is 1.405507153. Multiplying them together we get <strong>0.140550715</strong> (0.1 * 1.405507153). Given below is TF * IDF calculations for <strong>life and learning</strong> in all the documents.</p>
+<table border="0" width="465" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="156"></td>
+<td width="102"><strong>Document1</strong></td>
+<td width="65"><strong>Document2</strong></td>
+<td width="65"><strong>Document3</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>life</strong></td>
+<td align="right">0.140550715</td>
+<td align="right">0.200786736</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td height="15"><strong>learning</strong></td>
+<td align="right">0.140550715</td>
+<td align="right">0</td>
+<td align="right">0.468502384</td>
+</tr>
+</tbody>
+</table>
+<h2>Step 4: Vector Space Model – Cosine Similarity</h2>
+<p>From each document we derive a vector. If you need some refresher on vector refer <a href="http://www.mathsisfun.com/algebra/vectors-dot-product.html" target="_blank">here</a>.
+ The set of documents in a collection then is viewed as a set of vectors
+ in a vector space. Each term will have its own axis. Using the formula 
+given below we can find out the similarity between any two documents.</p>
+<pre>Cosine Similarity (d1, d2) =  Dot product(d1, d2) <strong>/</strong> ||d1|| * ||d2||
+
+Dot product (d1,d2) = d1[0] * d2[0] + d1[1] * d2[1] * … * d1[n] * d2[n]
+||d1|| = square root(d1[0]<sup>2</sup> + d1[1]<sup>2</sup> + ... + d1[n]<sup>2</sup>)
+||d2|| = square root(d2[0]<sup>2</sup> + d2[1]<sup>2</sup> + ... + d2[n]<sup>2</sup>)</pre>
+<p><a href="https://janav.files.wordpress.com/2013/10/cosinesimilarity.jpg"><img class="alignnone  wp-image-3358" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/cosinesimilarity.jpg" alt="cosinesimilarity" height="400" width="500"></a></p>
+<p>Vectors deals only with numbers. In this example we are dealing with 
+text documents. This was the reason why we used TF and IDF to convert 
+text into numbers so that it can be represented by a vector.</p>
+<p>Refer to the <a href="http://nlp.stanford.edu/IR-book/html/htmledition/dot-products-1.html" target="_blank">link</a> for detailed explanation of cosine similarity and vector space model. I found the following explanation in the book <a href="http://www.amazon.com/Mahout-Action-Sean-Owen/dp/1935182684" target="_blank">Mahout in Action</a>&nbsp;very useful.</p>
+<blockquote><p>The <strong>cosine measure similarity</strong> is another
+ similarity metric that depends on envisioning user preferences as 
+points in space. &nbsp;Hold in mind the image of user preferences as 
+points in an <strong>n-dimensional space</strong>. Now imagine two lines
+ from the origin, or &nbsp;point (0,0,…,0), to each of these two points.
+ When two users are similar, they’ll have similar ratings, and so will 
+be &nbsp;relatively close in space—at least, they’ll be in roughly the 
+same direction from the origin. The angle formed between these&nbsp;two 
+lines will be relatively small. In contrast, when the two users are 
+dissimilar, their points will be distant, and likely in different 
+directions from the origin, forming a wide angle.&nbsp;This angle can be
+ used as the basis for a similarity metric in the same way that the 
+Euclidean distance was used to form a&nbsp;similarity metric. In this 
+case, the cosine of the angle leads to a similarity value. <strong>If 
+you’re rusty on trigonometry, all&nbsp;you need to remember to 
+understand this is that the cosine value is always between –1 and 1: the
+ cosine of a small angle is&nbsp;near 1, and the cosine of a large angle
+ near 180 degrees is close to –1. This is good, because small angles 
+should map to&nbsp;high similarity, near 1, and large angles should map 
+to near –1</strong>.</p></blockquote>
+<p>The query entered by the user can also be represented as a vector. We will calculate the TF*IDF for the query</p>
+<table border="0" width="400" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="156"></td>
+<td width="77"><strong>TF</strong></td>
+<td width="102"><strong>IDF</strong></td>
+<td width="65"><strong>TF*IDF</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>life</strong></td>
+<td align="right">0.5</td>
+<td align="right">1.405507153</td>
+<td align="right">0.702753576</td>
+</tr>
+<tr>
+<td height="15"><strong>learning</strong></td>
+<td align="right">0.5</td>
+<td align="right">1.405507153</td>
+<td align="right">0.702753576</td>
+</tr>
+</tbody>
+</table>
+<p>Let us now calculate the cosine similarity of the query and Document1. You can do the calculation using this <a href="http://www.appliedsoftwaredesign.com/archives/cosine-similarity-calculator" target="_blank">tool</a>.</p>
+<pre>Cosine Similarity(Query,Document1) = Dot product(Query, Document1) <strong>/</strong> ||Query|| * ||Document1||
+
+<strong>Dot product(Query, Document1)</strong> 
+     = ((0.702753576) * (0.140550715) + (0.702753576)*(0.140550715))
+     = 0.197545035151
+
+<strong>||Query||</strong> = sqrt((0.702753576)<sup>2</sup> + (0.702753576)<sup>2</sup>) = 0.993843638185
+
+<strong>||Document1||</strong> = sqrt((0.140550715)<sup>2</sup> + (0.140550715)<sup>2</sup>) = 0.198768727354
+
+<strong>Cosine Similarity(Query, Document)</strong> = 0.197545035151 / (0.993843638185) * (0.198768727354)
+                                        = 0.197545035151 / 0.197545035151
+                                        = 1</pre>
+<p>Given below is the similarity scores for all the documents and the query</p>
+<table border="0" width="400" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td height="15" width="156"></td>
+<td width="77"><strong>Document1</strong></td>
+<td width="102"><strong>Document2</strong></td>
+<td width="65"><strong>Document3</strong></td>
+</tr>
+<tr>
+<td height="15"><strong>Cosine Similarity</strong></td>
+<td align="right">1</td>
+<td align="right">0.707106781</td>
+<td align="right">0.707106781</td>
+</tr>
+</tbody>
+</table>
+<p>I plotted vector values for the query and documents in 2-dimensional 
+space of life and learning. Document1 has the highest score of 1. This 
+is not surprising as it has both the terms life and learning.</p>
+<p><a href="https://janav.files.wordpress.com/2013/10/cosinesimiarlity.jpeg"><img class="alignnone size-large wp-image-3349" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/cosinesimiarlity.jpeg" alt="cosinesimiarlity" height="354" width="700"></a></p>
+		<div class="wpcnt">
+			<div class="wpa wpmrec">
+				<a class="wpa-about" href="https://wordpress.com/about-these-ads/" rel="nofollow">About these ads</a>
+				<div class="u">
+					<script type="text/javascript">
+					(function(g){g.__ATA.initAd({sectionId:26942, width:300, height:250});})(window);
+					</script><div id="automattic-id-1986" data-section="26942" style="width:300px; height:250px;"><iframe src="javascript:&quot;<html><body style='background:transparent;margin:0%;'></body></html>&quot;" id="fif_slot_automattic-id-_automattic-id-1986" name="fif_slot_automattic-id-_automattic-id-1986" scrolling="no" style="border:none;width:300px;height:250px;" frameborder="0" height="250" width="300"></iframe></div>
+				</div>
+			</div>
+		</div><div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share:</h3><div class="sd-content"><ul><li><a href="#" class="sharing-anchor sd-button share-more"><span>Share</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-twitter"><a rel="nofollow" data-shared="sharing-twitter-3295" class="share-twitter sd-button share-icon" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?share=twitter&amp;nb=1" target="_blank" title="Click to share on Twitter"><span>Twitter<span class="share-count">9</span></span></a></li><li class="share-linkedin"><a rel="nofollow" data-shared="sharing-linkedin-3295" class="share-linkedin sd-button share-icon" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?share=linkedin&amp;nb=1" target="_blank" title="Click to share on LinkedIn"><span>LinkedIn<span class="share-count">3</span></span></a></li><li class="share-end"></li><li class="share-facebook"><a rel="nofollow" data-shared="sharing-facebook-3295" class="share-facebook sd-button share-icon" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?share=facebook&amp;nb=1" target="_blank" title="Share on Facebook"><span>Facebook<span class="share-count">9</span></span></a></li><li class="share-end"></li></ul></div></div></div></div></div><div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-loaded" id="like-post-wrapper-8483731-3295-5638c5bc12b42" data-src="//widgets.wp.com/likes/#blog_id=8483731&amp;post_id=3295&amp;origin=janav.wordpress.com&amp;obj_id=8483731-3295-5638c5bc12b42" data-name="like-post-frame-8483731-3295-5638c5bc12b42"><h3 class="sd-title">Like this:</h3><div class="likes-widget-placeholder post-likes-widget-placeholder" style="height: 55px; display: none;"><span class="button"><span>Like</span></span> <span class="loading">Loading...</span></div><iframe class="post-likes-widget jetpack-likes-widget" name="like-post-frame-8483731-3295-5638c5bc12b42" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/a.html" frameborder="0" height="55px" width="100%"></iframe><span class="sd-text-color"></span><a class="sd-link-color"></a></div></div>			</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+		<a class="entry-date" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/">October 27, 2013</a> in <a href="https://janav.wordpress.com/category/computer-science/" rel="category tag">Computer Science</a>. Tags: <a href="https://janav.wordpress.com/tag/computer-science/" rel="tag">Computer Science</a>, <a href="https://janav.wordpress.com/tag/mental-models/" rel="tag">Mental Models</a>, <a href="https://janav.wordpress.com/tag/recommender-systems/" rel="tag">Recommender Systems</a>
+			</footer><!-- .entry-meta -->
+</article><!-- #post-## -->
+			<div class="related-content">
+	<h3 class="related-content-title">Related posts</h3>
+	
+		<article id="post-7252" class="post-7252 post type-post status-publish format-standard hentry category-business category-learning tag-learning">
+
+			
+			<header class="entry-header">
+				<h3 class="entry-title"><a href="https://janav.wordpress.com/2015/09/23/seeking-wisdom-in-india/" rel="bookmark">Seeking Wisdom In India</a></h3>
+			</header><!-- .entry-header -->
+
+		</article>
+
+	
+		<article id="post-5740" class="post-5740 post type-post status-publish format-standard hentry category-learning tag-learning">
+
+			
+			<header class="entry-header">
+				<h3 class="entry-title"><a href="https://janav.wordpress.com/2015/01/10/building-your-vocabulary/" rel="bookmark">Building Your Vocabulary</a></h3>
+			</header><!-- .entry-header -->
+
+		</article>
+
+	
+		<article id="post-3623" class="post-3623 post type-post status-publish format-standard hentry category-learning tag-books tag-mental-models tag-the-black-swan">
+
+			
+			<header class="entry-header">
+				<h3 class="entry-title"><a href="https://janav.wordpress.com/2013/11/28/the-black-swan/" rel="bookmark">The Black Swan</a></h3>
+			</header><!-- .entry-header -->
+
+		</article>
+
+	</div>
+
+				<nav role="navigation" id="nav-below" class="navigation-post">
+		<h1 class="screen-reader-text">Post navigation</h1>
+
+	
+		<div class="nav-previous"><a href="https://janav.wordpress.com/2013/10/23/netflix-knows-what-i-like/" rel="prev"><span class="meta-nav">←</span> Netflix knows what I like</a></div>		<div class="nav-next"><a href="https://janav.wordpress.com/2013/11/02/mastermind/" rel="next">Mastermind <span class="meta-nav">→</span></a></div>
+	
+	</nav><!-- #nav-below -->
+	
+			
+	<div id="comments" class="comments-area">
+
+	
+			<h2 class="comments-title">
+			55 thoughts on “<span>Tf-Idf and Cosine similarity</span>”		</h2>
+
+		
+		<ol class="comment-list">
+				<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-665">
+		<article id="comment-665" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/254fb8e23e2e68a2426124e2262f96a2_normal.jpeg" class="avatar avatar-40" height="40" width="40">					<cite class="fn"><a href="http://twitter.com/ishivakumar" rel="external nofollow" class="url">shiva kumar (@ishivakumar)</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-665"><time datetime="2013-12-11T03:59:41+00:00">
+					December 11, 2013 at 3:59 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hey,<br>
+Thanks for the awesome article very helpful ..</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=665#respond" onclick='return addComment.moveForm( "comment-665", "665", "respond", "3295" )' aria-label="Reply to shiva kumar (@ishivakumar)">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-834">
+		<article id="comment-834" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-7c9a259a36ad8575ccc10e2ff12f225e-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/7c9a259a36ad8575ccc10e2ff12f225e.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://google.com/" rel="external nofollow" class="url">sam</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-834"><time datetime="2014-01-06T02:06:41+00:00">
+					January 6, 2014 at 2:06 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>why is 0.5 of Tf(life) and Tf(learning)? I can not understand</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=834#respond" onclick='return addComment.moveForm( "comment-834", "834", "respond", "3295" )' aria-label="Reply to sam">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor even depth-2 highlander-comment" id="li-comment-836">
+		<article id="comment-836" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-836"><time datetime="2014-01-06T11:23:33+00:00">
+					January 6, 2014 at 11:23 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Sam,</p>
+<p>In the search query ‘life learning’ each term occurs one. There are 
+two terms in total. Hence the TF(life) and TF(learning) is 1/2 or 0.5</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=836#respond" onclick='return addComment.moveForm( "comment-836", "836", "respond", "3295" )' aria-label="Reply to Jana Vembunarayanan">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-845">
+		<article id="comment-845" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-7c9a259a36ad8575ccc10e2ff12f225e-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/7c9a259a36ad8575ccc10e2ff12f225e.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://google.com/" rel="external nofollow" class="url">sam</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-845"><time datetime="2014-01-08T06:18:24+00:00">
+					January 8, 2014 at 6:18 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>previous comment was not posted correctly, I uploaded it here <a href="http://www.speedyshare.com/FESse/TextSimilarity.rar" rel="nofollow">http://www.speedyshare.com/FESse/TextSimilarity.rar</a></p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor even depth-3 highlander-comment" id="li-comment-852">
+		<article id="comment-852" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-852"><time datetime="2014-01-08T19:55:59+00:00">
+					January 8, 2014 at 7:55 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Sam,</p>
+<p>The link is asking me to download an executable file and I do not 
+have Windows operating system. Can you upload the file in box.com and 
+share the link to me.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-854">
+		<article id="comment-854" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-7c9a259a36ad8575ccc10e2ff12f225e-2" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/7c9a259a36ad8575ccc10e2ff12f225e.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://google.com/" rel="external nofollow" class="url">sam</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-854"><time datetime="2014-01-08T23:36:45+00:00">
+					January 8, 2014 at 11:36 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p><a href="https://app.box.com/s/zcyymwe9ld319v1semhw" rel="nofollow">https://app.box.com/s/zcyymwe9ld319v1semhw</a> I uploaded it here</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even depth-3 highlander-comment" id="li-comment-862">
+		<article id="comment-862" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-7c9a259a36ad8575ccc10e2ff12f225e-3" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/7c9a259a36ad8575ccc10e2ff12f225e.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">sam</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-862"><time datetime="2014-01-11T08:04:47+00:00">
+					January 11, 2014 at 8:04 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Jana Vembunarayanan,</p>
+<p>Have you check it?</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor odd alt depth-3 highlander-comment" id="li-comment-863">
+		<article id="comment-863" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-2" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-863"><time datetime="2014-01-11T08:19:47+00:00">
+					January 11, 2014 at 8:19 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Sam,</p>
+<p>I am not familiar with c# and do not have an environment to run your 
+code. Hence I am not able to find any issues with your code.</p>
+<p>The best way to troubleshoot is to print out the values for tf, idf 
+and their products separately and see if it differs from my 
+calculations.</p>
+<p>I did all the calculations manually while writing this post to 
+explain the core of the concept. May be your code is correct and my 
+manual calculations could have a bug.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even depth-3 highlander-comment" id="li-comment-871">
+		<article id="comment-871" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-7c9a259a36ad8575ccc10e2ff12f225e-4" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/7c9a259a36ad8575ccc10e2ff12f225e.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">sam</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-871"><time datetime="2014-01-13T12:35:37+00:00">
+					January 13, 2014 at 12:35 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Jana Vembunarayanan,</p>
+<p>ok, I’ll explain what I have written…</p>
+<p>well, I take this 3 document, split and convert it to string array.<br>
+Than each array I calculate:<br>
+TF – which is number of times a word occurs in a document / whole word’s count of document.<br>
+IDF –  log(Total Number Of Documents / Number Of Documents with term game in it) as you said.<br>
+and at last  Weight = TF * IDF.<br>
+After all of this done I have term’s weight in each document. Now I want to use Cosine similarity function.<br>
+In CalculateCosineSimilarity method I assign two parameters double[ ] 
+vecA, double[ ] vecB, which is weights of Document1 and Document2. Than I
+ calculate dot product, magnitudeOfA and magnitudeOfB and at last 
+calculate it: Cos = dotProduct / (magnitudeOfA * magnitudeOfB): this is 
+all about code. Is it correct what I have written?</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor odd alt depth-3 highlander-comment" id="li-comment-873">
+		<article id="comment-873" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-3" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-873"><time datetime="2014-01-13T19:19:57+00:00">
+					January 13, 2014 at 7:19 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Sam,</p>
+<p>1. For IDF calculation you need to add 1 to the log(Total Number Of 
+Documents / Number Of Documents with term game in it) as log(1) = 0</p>
+<p>2. You need to compute the dot product between the document vector and the query vector and not between documents.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even depth-3 highlander-comment" id="li-comment-884">
+		<article id="comment-884" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-7c9a259a36ad8575ccc10e2ff12f225e-5" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/7c9a259a36ad8575ccc10e2ff12f225e.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://google.com/" rel="external nofollow" class="url">sam</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-884"><time datetime="2014-01-14T06:42:10+00:00">
+					January 14, 2014 at 6:42 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Jana Vembunarayanan,</p>
+<p>I did not understand this part(about query) well…<br>
+In your example user enters some text and than comparing it to this documents, is not it?<br>
+In my case I want to compare one of this 3 document to each other. for 
+example want to compare Document1 to Document2 and Document3, and query 
+what will be in this case? Document1?</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor odd alt depth-3 highlander-comment" id="li-comment-887">
+		<article id="comment-887" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-4" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-887"><time datetime="2014-01-14T07:26:54+00:00">
+					January 14, 2014 at 7:26 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Sam,</p>
+<p>I got it and looks correct to me.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-1061">
+		<article id="comment-1061" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-ccbe91871631ecd55526f52161d5cc96-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/ccbe91871631ecd55526f52161d5cc96.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Shivam Midha</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1061"><time datetime="2014-03-30T12:51:27+00:00">
+					March 30, 2014 at 12:51 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Thnx for this awesome article sir. It
+ was quite helpful but just having a bit of a trouble in how you created
+ document vectors after tf-idf value. I am sorry if i asked something 
+silly but was having trouble in it.</p>
+<p>Regards,<br>
+Shivam</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1061#respond" onclick='return addComment.moveForm( "comment-1061", "1061", "respond", "3295" )' aria-label="Reply to Shivam Midha">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor odd alt depth-2 highlander-comment" id="li-comment-1062">
+		<article id="comment-1062" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-5" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1062"><time datetime="2014-03-30T14:28:06+00:00">
+					March 30, 2014 at 2:28 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Shivam,</p>
+<p>Thanks. The output from (Step 3: TF * IDF) is the vector for each document.<br>
+Using this we compute the cosine on the query vector.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1062#respond" onclick='return addComment.moveForm( "comment-1062", "1062", "respond", "3295" )' aria-label="Reply to Jana Vembunarayanan">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment even depth-3 highlander-comment" id="li-comment-1068">
+		<article id="comment-1068" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-ccbe91871631ecd55526f52161d5cc96-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/ccbe91871631ecd55526f52161d5cc96.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Shivam Midha</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1068"><time datetime="2014-03-31T13:09:24+00:00">
+					March 31, 2014 at 1:09 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>ok i get it, Thank u again <span class="wp-smiley wp-emoji wp-emoji-smile" title=":)">:)</span></p>
+<p>Regards,<br>
+Shivam</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1099">
+		<article id="comment-1099" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-7589aabf0723fdcccc118e0f4bd931c8-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/7589aabf0723fdcccc118e0f4bd931c8.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Himanshu</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1099"><time datetime="2014-04-11T13:34:10+00:00">
+					April 11, 2014 at 1:34 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hi, </p>
+<p>Thanks for the awesome article. It was really helpful. Although, I 
+have question. In case my query contains a word which does not exist in 
+any of the documents(say “electronics”) , how should I calculate the IDF
+ score for “electronics” ?<br>
+I need the IDF score for “electronics” to calculate ||Query|| while I am
+ computing the similarity between the Query and say Document 1.</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1099#respond" onclick='return addComment.moveForm( "comment-1099", "1099", "respond", "3295" )' aria-label="Reply to Himanshu">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor even depth-2 highlander-comment" id="li-comment-1107">
+		<article id="comment-1107" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-6" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1107"><time datetime="2014-04-14T08:37:26+00:00">
+					April 14, 2014 at 8:37 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Himanshu,</p>
+<p>If none of the documents has the term then set its IDF to zero.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1107#respond" onclick='return addComment.moveForm( "comment-1107", "1107", "respond", "3295" )' aria-label="Reply to Jana Vembunarayanan">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-2468">
+		<article id="comment-2468" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-6aa464ab01e76716bb23df32008297c5-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/6aa464ab01e76716bb23df32008297c5.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jerôme</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2468"><time datetime="2015-05-22T08:01:38+00:00">
+					May 22, 2015 at 8:01 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hi Jana,</p>
+<p>That will be a good thing to do, but I seem to observe your algorithm does otherwise:</p>
+<p>if numDocumentsWithThisTerm &gt; 0:<br>
+        return 1.0 + log(float(len(allDocuments)) / numDocumentsWithThisTerm)<br>
+    else:<br>
+        return 1.0</p>
+<p>Anyhow, it doesn’t matter in the results of the query after all I guess. (Correct me from wrong.)</p>
+<p>Regards,<br>
+Jerôme</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-1104">
+		<article id="comment-1104" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-53fd4d82cc8be4f87b6831287cfd53c0-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/53fd4d82cc8be4f87b6831287cfd53c0.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://gravatar.com/deathmetal124" rel="external nofollow" class="url">K ANVESH</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1104"><time datetime="2014-04-14T02:59:50+00:00">
+					April 14, 2014 at 2:59 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>frikking brilliant, man. God bless you.</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1104#respond" onclick='return addComment.moveForm( "comment-1104", "1104", "respond", "3295" )' aria-label="Reply to K ANVESH">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1111">
+		<article id="comment-1111" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-28749b6d53a4b9e79581c4331f04248a-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/28749b6d53a4b9e79581c4331f04248a.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://www.repni.it/" rel="external nofollow" class="url">Dario</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1111"><time datetime="2014-04-15T07:14:46+00:00">
+					April 15, 2014 at 7:14 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hi Jana, thank you very much for this brilliant article!</p>
+<p>I have a question about the formula you wrote:<br>
+Cosine Similarity(Query,Document1) = Dot product(Query, Document1) / ||Query|| * ||Document1||</p>
+<p>And particularly about the way you compute ||Document1||:<br>
+||Document1|| = sqrt((0.140550715)**2 + (0.140550715)**2) = 0.198768727354</p>
+<p>If I understand correctly, you are summing over the tf*idf values 
+(relative to Document1) of the terms that are present in both Document1 
+and Query (“life” and “learning”). However, from the formula on 
+Wikipedia (<a href="http://en.wikipedia.org/wiki/Cosine_similarity#Definition" rel="nofollow">http://en.wikipedia.org/wiki/Cosine_similarity#Definition</a>)
+ I understand that the norm of Document1 should be obtained summing over
+ the TF-IDF values of all its terms (“the”, “game”, “of”, “life”, etc…).</p>
+<p>I am pretty sure I am missing something out here, can you help me out with this please?</p>
+<p>Thanks!<br>
+Dario</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1111#respond" onclick='return addComment.moveForm( "comment-1111", "1111", "respond", "3295" )' aria-label="Reply to Dario">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor even depth-2 highlander-comment" id="li-comment-1112">
+		<article id="comment-1112" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-7" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1112"><time datetime="2014-04-15T21:30:00+00:00">
+					April 15, 2014 at 9:30 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Dario,</p>
+<p>You are correct as the formula for calculating norm should include all the values.<br>
+Take a look at the code from lenskit.</p>
+<p>CosineSimilarity  – <a href="http://goo.gl/2VqDOS" rel="nofollow">http://goo.gl/2VqDOS</a><br>
+Norm calculation – <a href="http://goo.gl/Fnev40" rel="nofollow">http://goo.gl/Fnev40</a></p>
+<p>Regards<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1112#respond" onclick='return addComment.moveForm( "comment-1112", "1112", "respond", "3295" )' aria-label="Reply to Jana Vembunarayanan">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-1113">
+		<article id="comment-1113" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-28749b6d53a4b9e79581c4331f04248a-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/28749b6d53a4b9e79581c4331f04248a.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://www.repni.it/" rel="external nofollow" class="url">Dario</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1113"><time datetime="2014-04-17T03:12:41+00:00">
+					April 17, 2014 at 3:12 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Ok, good to know… Thanks a lot!</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even depth-3 highlander-comment" id="li-comment-2185">
+		<article id="comment-2185" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-08ea46ffadbb835f148dfebe9ececa1e-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/08ea46ffadbb835f148dfebe9ececa1e.jpeg" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">b00t</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2185"><time datetime="2015-03-27T10:00:19+00:00">
+					March 27, 2015 at 10:00 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>As in, you’re dividing the dot product by a larger norm, and thus you’d not get 1 (or am I really confused?)</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-1134">
+		<article id="comment-1134" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-bedcba3d1bfa68236cdd7a42d2841af0-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/bedcba3d1bfa68236cdd7a42d2841af0.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Shopan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1134"><time datetime="2014-04-22T07:07:33+00:00">
+					April 22, 2014 at 7:07 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hi Jana, thanks for the nice article.
+ I understood how you have calculated the TF of query terms (Life and 
+learning). But, unfortunately I haven’t got how you calculated the IDF 
+for the query terms. Could you please explain it?</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1134#respond" onclick='return addComment.moveForm( "comment-1134", "1134", "respond", "3295" )' aria-label="Reply to Shopan">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1148">
+		<article id="comment-1148" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/picture.jpeg" class="avatar avatar-40" height="40" width="40">					<cite class="fn"><a href="https://www.facebook.com/jerry.klimcik" rel="external nofollow" class="url">Jerry Klimčík</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1148"><time datetime="2014-04-26T03:18:16+00:00">
+					April 26, 2014 at 3:18 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hi Jana, I found many articles about 
+tf-idf and cosine similarity but your is the best, good explanation with
+ examples is exactly what I needed. Thank you very much for your time to
+ write this great article. I wish you luck in your next work!</p>
+<p>Best regards, Jerry</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1148#respond" onclick='return addComment.moveForm( "comment-1148", "1148", "respond", "3295" )' aria-label="Reply to Jerry Klimčík">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-1156">
+		<article id="comment-1156" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-d78fdea690691652672fa8b64395ade8-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/d78fdea690691652672fa8b64395ade8.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Praveen</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1156"><time datetime="2014-04-28T07:40:46+00:00">
+					April 28, 2014 at 7:40 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Brilliant article Sir. Thanks !<br>
+I have a small doubt : while calculating the idf for query vector how 
+come 1.4055 comes? Shouldn’t we consider query as a single document .? 
+In that case 1+log( 1/1) = 1 right? Please clarify this .</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1156#respond" onclick='return addComment.moveForm( "comment-1156", "1156", "respond", "3295" )' aria-label="Reply to Praveen">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1211">
+		<article id="comment-1211" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-74900a3c9ef8522e1d77e2af6d4c3235-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/74900a3c9ef8522e1d77e2af6d4c3235.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Alexei</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1211"><time datetime="2014-05-15T00:58:24+00:00">
+					May 15, 2014 at 12:58 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Good explanation!<br>
+But that happens if we had a query with only one term?<br>
+Angle between two one-dimensional vectors not even defined. It seems 
+like the whole vector-space model doesn’t give a solution for such 
+cases. Yet, one-term queries ain’t esoteric at all.</p>
+<p>The normalized query vector becomes the unity vector [1.0]<br>
+The normalized document vector may be either [1.0] for documents that have this term, or [0.0] for documents that don’t have it.<br>
+We end up with binary rating, neglecting the tf ratings in documents, 
+without ability to sort the results or get the top K of them….</p>
+<p>Actually, this corner case may appear in multi-word queries as well. 
+Repeating the same term  many times in the query wouldn’t make a 
+difference here. Having query with multiple distinct terms, where only 
+one of them stands for real known term, would bring similar results. 
+Because if some term isn’t indexed, we wouldn’t compute 1.0 + log(0) 
+which isn’t defined, but rather force it to be 0.0.</p>
+<p>Regards,<br>
+Alexei</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1211#respond" onclick='return addComment.moveForm( "comment-1211", "1211", "respond", "3295" )' aria-label="Reply to Alexei">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-2 highlander-comment" id="li-comment-2469">
+		<article id="comment-2469" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-6aa464ab01e76716bb23df32008297c5-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/6aa464ab01e76716bb23df32008297c5.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jerôme</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2469"><time datetime="2015-05-22T08:22:21+00:00">
+					May 22, 2015 at 8:22 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Dear Jana and Alexei,</p>
+<p>Thanks to your article the algoritm has really became clear to me. Great explaination, thanks!</p>
+<p>Alexei, I’m also curious about the same question! </p>
+<p>I was thinking about it, and it seems that this is exacty the reason 
+why document 2 and 3 have the same score as well. For relevance to the 
+query only the angular similarity is taken in account. This could be 
+implemented, since the table in step 3 already shows a greater match for
+ doc 3 than for doc 2, in a way.<br>
+I think this is not something like a bug, but more a choice of implementation. Therefore my question will be why, if I may.</p>
+<p>Regards,<br>
+Jerôme</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2469#respond" onclick='return addComment.moveForm( "comment-2469", "2469", "respond", "3295" )' aria-label="Reply to Jerôme">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-1348">
+		<article id="comment-1348" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-c2d9c5102cd46acadb4d7ef1d9d662d4-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/c2d9c5102cd46acadb4d7ef1d9d662d4.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Arman</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1348"><time datetime="2014-06-12T07:03:12+00:00">
+					June 12, 2014 at 7:03 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Nice explanation. Thanks.</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1348#respond" onclick='return addComment.moveForm( "comment-1348", "1348", "respond", "3295" )' aria-label="Reply to Arman">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1446">
+		<article id="comment-1446" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-4ac8ab0ea1713aade93c947624114129-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/4ac8ab0ea1713aade93c947624114129.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">SaeromSeo</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1446"><time datetime="2014-08-07T21:43:41+00:00">
+					August 7, 2014 at 9:43 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Such a perfect article that exactly what I have been looking for !!! God bless you !!</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1446#respond" onclick='return addComment.moveForm( "comment-1446", "1446", "respond", "3295" )' aria-label="Reply to SaeromSeo">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-1656">
+		<article id="comment-1656" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-b20aeb6359542e38e4642d1031de5ca6-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/b20aeb6359542e38e4642d1031de5ca6.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">thucnt</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1656"><time datetime="2014-10-21T10:28:45+00:00">
+					October 21, 2014 at 10:28 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hi every one, I’ve read this article 
+and I feel such a perfect. Now I want to have a program completely that 
+it was writen in Python. God bless you and thank you so much!</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1656#respond" onclick='return addComment.moveForm( "comment-1656", "1656", "respond", "3295" )' aria-label="Reply to thucnt">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-2 highlander-comment" id="li-comment-1657">
+		<article id="comment-1657" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-b20aeb6359542e38e4642d1031de5ca6-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/b20aeb6359542e38e4642d1031de5ca6.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">thucnt</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1657"><time datetime="2014-10-21T10:35:06+00:00">
+					October 21, 2014 at 10:35 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Please get me a program completely to I can refer it.<br>
+thank you very much!</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1657#respond" onclick='return addComment.moveForm( "comment-1657", "1657", "respond", "3295" )' aria-label="Reply to thucnt">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment even depth-3 highlander-comment" id="li-comment-1658">
+		<article id="comment-1658" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-1498249dd92a15d59aaae03f8f8cadad-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/1498249dd92a15d59aaae03f8f8cadad.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">phuongnga</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1658"><time datetime="2014-10-21T11:40:33+00:00">
+					October 21, 2014 at 11:40 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hi Jana Vembunarayanan  and everyone<br>
+how to calculate similarity between a query and documents using Python program<br>
+I have a set of documents and i have calculate both<br>
+1)Term -Frequency<br>
+2)Inverse-Frequency<br>
+3)TF/IDF</p>
+<p>Now i need to calculate the similarity between a specific query 
+(input from user) and a document (input from a file.txt) which will 
+produce a score that will rank the document from the highest similarity 
+to the lowest similarity towards the query.</p>
+<p>Can anyone guide me ? I just need to know how to proceed from my current progress.</p>
+<p>thanks</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1745">
+		<article id="comment-1745" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-f60a837255b48ab493e46f8faf9fc5e7-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/f60a837255b48ab493e46f8faf9fc5e7.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">chintan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1745"><time datetime="2014-11-20T21:44:17+00:00">
+					November 20, 2014 at 9:44 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hello Jana Vembunarayanan<br>
+Very good article, easy to understand.</p>
+<p>One doubt is that about cosine similartiy for document 2 because answer is showing 0.707106781<br>
+But  life value becomes 0.20078 and learning =0<br>
+so answer become 0. May be i am wrong.</p>
+<p>Can you explain for document 2</p>
+<p>May be i am wrong<br>
+Thanks</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1745#respond" onclick='return addComment.moveForm( "comment-1745", "1745", "respond", "3295" )' aria-label="Reply to chintan">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-1797">
+		<article id="comment-1797" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-bc856d01ebb401685e80aee2becf8abd-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/bc856d01ebb401685e80aee2becf8abd.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jowe</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1797"><time datetime="2014-12-07T18:51:23+00:00">
+					December 7, 2014 at 6:51 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hello thanks for the article, how 
+would you calculate Tf of query  if query had two or more similiar words
+ i.e { life, life, learning} for the word life would it be 2/2 or 1/3</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1797#respond" onclick='return addComment.moveForm( "comment-1797", "1797", "respond", "3295" )' aria-label="Reply to Jowe">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-u111aira odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1807">
+		<article id="comment-1807" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-08500ca40993e046b73c249fe8708b4c-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/08500ca40993e046b73c249fe8708b4c.jpeg" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn"><a href="http://umairasajjad.wordpress.com/" rel="external nofollow" class="url">Umaira Sajjad</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1807"><time datetime="2014-12-11T01:43:43+00:00">
+					December 11, 2014 at 1:43 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Reblogged this on <a href="http://u111airasajjad.wordpress.com/2014/12/11/tf-idf-and-cosine-similarity/" rel="nofollow">Talking Crap Blog</a>.</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1807#respond" onclick='return addComment.moveForm( "comment-1807", "1807", "respond", "3295" )' aria-label="Reply to Umaira Sajjad">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-1901">
+		<article id="comment-1901" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-f422cb179fee1a8f956a83dba8fcf0ff-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/f422cb179fee1a8f956a83dba8fcf0ff.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">chinu</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1901"><time datetime="2015-01-04T10:23:28+00:00">
+					January 4, 2015 at 10:23 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hello Sir,here you have explained how
+ to find the cosine similarity between a query and a document.So by 
+using the above same process can I find the cosine similarity between 
+two documents using texts.<br>
+Thanks</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1901#respond" onclick='return addComment.moveForm( "comment-1901", "1901", "respond", "3295" )' aria-label="Reply to chinu">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1904">
+		<article id="comment-1904" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-453e2e06c2eb08e8f528ab23c2cdcdaf-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/453e2e06c2eb08e8f528ab23c2cdcdaf.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Ravi</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1904"><time datetime="2015-01-06T09:39:28+00:00">
+					January 6, 2015 at 9:39 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hello this is really nice 
+explanation. if you have java code which executed correctly and give 
+correct result so please give it to me.</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1904#respond" onclick='return addComment.moveForm( "comment-1904", "1904", "respond", "3295" )' aria-label="Reply to Ravi">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-1916">
+		<article id="comment-1916" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-356d2b112b76cce74af9a0b0dfd2d6f6-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/356d2b112b76cce74af9a0b0dfd2d6f6.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">meera</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1916"><time datetime="2015-01-09T21:34:40+00:00">
+					January 9, 2015 at 9:34 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>thank you.. finally found a good explanation</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1916#respond" onclick='return addComment.moveForm( "comment-1916", "1916", "respond", "3295" )' aria-label="Reply to meera">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-1925">
+		<article id="comment-1925" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-6361eda331c15067970c591f3e0845f1-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/6361eda331c15067970c591f3e0845f1.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">hesham</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-1925"><time datetime="2015-01-11T07:27:33+00:00">
+					January 11, 2015 at 7:27 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>I tried my own example I get Cosine Similarity(Query, Document) divided by zero, so what to do??</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=1925#respond" onclick='return addComment.moveForm( "comment-1925", "1925", "respond", "3295" )' aria-label="Reply to hesham">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1 highlander-comment" id="li-comment-2059">
+		<article id="comment-2059" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-cf4f51a5a04c752a27f1a245566242da-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/cf4f51a5a04c752a27f1a245566242da.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Ragu</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2059"><time datetime="2015-02-15T20:57:42+00:00">
+					February 15, 2015 at 8:57 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>In termFrequency function the term and document is asked …I don’t have an idea for that.. pls explain<br>
+what is term .</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2059#respond" onclick='return addComment.moveForm( "comment-2059", "2059", "respond", "3295" )' aria-label="Reply to Ragu">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2333">
+		<article id="comment-2333" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-89fc08471e901ab0e4da8160a0bc1065-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/89fc08471e901ab0e4da8160a0bc1065.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">hesham</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2333"><time datetime="2015-05-01T10:36:24+00:00">
+					May 1, 2015 at 10:36 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Which tool do you used to plot the vectors?</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2333#respond" onclick='return addComment.moveForm( "comment-2333", "2333", "respond", "3295" )' aria-label="Reply to hesham">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor even depth-2 highlander-comment" id="li-comment-2334">
+		<article id="comment-2334" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-8" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2334"><time datetime="2015-05-01T10:53:00+00:00">
+					May 1, 2015 at 10:53 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Excel sheet.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2334#respond" onclick='return addComment.moveForm( "comment-2334", "2334", "respond", "3295" )' aria-label="Reply to Jana Vembunarayanan">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-2346">
+		<article id="comment-2346" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-89fc08471e901ab0e4da8160a0bc1065-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/89fc08471e901ab0e4da8160a0bc1065.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">hesham</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2346"><time datetime="2015-05-02T19:43:31+00:00">
+					May 2, 2015 at 7:43 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>I tried Excel to plot vectors but its not work like yours</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor even depth-3 highlander-comment" id="li-comment-2348">
+		<article id="comment-2348" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-9" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2348"><time datetime="2015-05-02T20:27:03+00:00">
+					May 2, 2015 at 8:27 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hesham,</p>
+<p>There are 3 charts. Which one are you referring to? If it’s the 2nd 
+one then I got the image (not excel) and annotated it with 
+life/learning.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt depth-3 highlander-comment" id="li-comment-2373">
+		<article id="comment-2373" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-6361eda331c15067970c591f3e0845f1-1" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/6361eda331c15067970c591f3e0845f1.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">hesham</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2373"><time datetime="2015-05-08T14:27:11+00:00">
+					May 8, 2015 at 2:27 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>The third chart</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment byuser comment-author-jvembuna comment-author-is-site-member bypostauthor even depth-3 highlander-comment" id="li-comment-2374">
+		<article id="comment-2374" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-0b90f00a88aaaff62fe430a0358d1a85-10" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/0b90f00a88aaaff62fe430a0358d1a85.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Jana Vembunarayanan</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2374"><time datetime="2015-05-08T16:21:17+00:00">
+					May 8, 2015 at 4:21 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hesham,</p>
+<p>I use Microsoft Excel and annotated the image using Preview software.</p>
+<p>Regards,<br>
+Jana</p>
+</div>
+
+			<div class="reply">
+						</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-2370">
+		<article id="comment-2370" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-1e34fa5c80b409aa467bfb6352942214-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/1e34fa5c80b409aa467bfb6352942214.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Hira</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2370"><time datetime="2015-05-07T08:01:34+00:00">
+					May 7, 2015 at 8:01 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hello, Thanks for a very nice 
+explanation. I am working on this project where I identify different 
+books/short stories with various features such as alliteration, 
+consonance and topics obtained by a topic modelling software (mallet) so
+ what I have is a feature matrix where rows form the documents and each 
+of the columns are features so Column1 = alliteration Score (normalized 
+over the length of the book), Column2 = consonance Score, and Column3 = 
+Topic1 frequence, and Col4 = Top 2 frequency et cetera. All the values 
+usually range between 0 and 1. So, I am using these values instead of 
+the tf-idf scores. Do you think something like cosine similarity could 
+still work on it?</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2370#respond" onclick='return addComment.moveForm( "comment-2370", "2370", "respond", "3295" )' aria-label="Reply to Hira">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2476">
+		<article id="comment-2476" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-19bba62ec858fa9150416a7bed8229db-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/19bba62ec858fa9150416a7bed8229db.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Mushtaq</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2476"><time datetime="2015-05-25T01:05:16+00:00">
+					May 25, 2015 at 1:05 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Use any suitable clustering method 
+say M as long as the method M works on pure Plain Text, 
+language-independently. Thus, M must work anyway, regardless of whether 
+the texts are French, Italian, whatsoever:<br>
+—&gt; Extract the ‘pure’ medieval plain text out of the tagged MOM charters, which gives a large set S of ‘pure’ texts.<br>
+—&gt; On all documents in S, apply your spelling normalization, which yields a normalized set S’.<br>
+—&gt; Then use the chosen method M to make clusters in S, obtaining a clustering result C.<br>
+—&gt; Then use the same method M to make clusters in S’, obtaining a clustering results C’.<br>
+—&gt; Finally compare if there are statistically significant differences between C and C’.<br>
+For this task can I use TF-IDF, a method I am saying M?</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2476#respond" onclick='return addComment.moveForm( "comment-2476", "2476", "respond", "3295" )' aria-label="Reply to Mushtaq">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-2696">
+		<article id="comment-2696" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-13d8eccfd06c43a7ef08b09a5ae47ac7-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/13d8eccfd06c43a7ef08b09a5ae47ac7.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">Ahmed</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2696"><time datetime="2015-06-28T15:29:27+00:00">
+					June 28, 2015 at 3:29 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>-&gt; can any one provide code for TF IDF and cosine similarity in matlab</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2696#respond" onclick='return addComment.moveForm( "comment-2696", "2696", "respond", "3295" )' aria-label="Reply to Ahmed">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2701">
+		<article id="comment-2701" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/photo.jpg" class="avatar avatar-40" height="40" width="40">					<cite class="fn"><a href="https://plus.google.com/110922102366160990870" rel="external nofollow" class="url">Adewole Kayode</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2701"><time datetime="2015-06-30T16:50:19+00:00">
+					June 30, 2015 at 4:50 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>This article is so informative and 
+straightforward. Thanks a lot. You even included additional mathematical
+ reference documents. So good!!!</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2701#respond" onclick='return addComment.moveForm( "comment-2701", "2701", "respond", "3295" )' aria-label="Reply to Adewole Kayode">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-2744">
+		<article id="comment-2744" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-59ee58acf9d3e17857702f80189c4cc3-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/59ee58acf9d3e17857702f80189c4cc3.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">manish saxean</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2744"><time datetime="2015-07-10T22:53:21+00:00">
+					July 10, 2015 at 10:53 pm					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>can someone explain the IDF calculation of Query-words. what is total number of documents ?<br>
+if it is one(i.e only query document)  then ln(1)=0.</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2744#respond" onclick='return addComment.moveForm( "comment-2744", "2744", "respond", "3295" )' aria-label="Reply to manish saxean">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2758">
+		<article id="comment-2758" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-cead68f3521f3929592bd463f88a5b6d-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/cead68f3521f3929592bd463f88a5b6d.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">shiju</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2758"><time datetime="2015-07-12T09:57:50+00:00">
+					July 12, 2015 at 9:57 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>In case there is only one document TF*IDF=TF. ….coz IDF=1 for all terms.</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2758#respond" onclick='return addComment.moveForm( "comment-2758", "2758", "respond", "3295" )' aria-label="Reply to shiju">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-even depth-1 highlander-comment" id="li-comment-2762">
+		<article id="comment-2762" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img id="grav-045c6ba746ec62c3b2f061bf1aea1134-0" alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/045c6ba746ec62c3b2f061bf1aea1134.png" class="avatar avatar-40 grav-hashed grav-hijack" height="40" width="40">					<cite class="fn">satish</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2762"><time datetime="2015-07-13T03:35:18+00:00">
+					July 13, 2015 at 3:35 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Hello,<br>
+What is best way to identify similar documents – is it TF_IDF matrix 
+consine similarity or Latent semantic analysis/indexing cosine 
+similarity? What advantage does Latent semantic analysis have? Any good 
+links and examples please provide. Does LSM/LSI have better performance 
+and how is rank of matrix chosen for SVD? Does LSM/LSI solve issue like –
+ assume we are searching documents for financial “BANK” but we are 
+getting documents related to medical blood “BANK”.<br>
+Thanks</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2762#respond" onclick='return addComment.moveForm( "comment-2762", "2762", "respond", "3295" )' aria-label="Reply to satish">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-odd thread-alt depth-1 highlander-comment" id="li-comment-2884">
+		<article id="comment-2884" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/photo.png" class="avatar avatar-40" height="40" width="40">					<cite class="fn"><a href="https://plus.google.com/115053619703971063341" rel="external nofollow" class="url">Bukola Omodunbi</a></cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#comment-2884"><time datetime="2015-08-07T09:17:44+00:00">
+					August 7, 2015 at 9:17 am					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>This has been very helpful. I’ve read
+ it again and again. But why will you use 1+log(..) for your idf? I 
+believe since a term occurs in at least in 1 document, then you don’t 
+need to add one. What do you think?<br>
+Thank you</p>
+</div>
+
+			<div class="reply">
+			<a rel="nofollow" class="comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/?replytocom=2884#respond" onclick='return addComment.moveForm( "comment-2884", "2884", "respond", "3295" )' aria-label="Reply to Bukola Omodunbi">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+		
+	
+	
+							<div id="respond" class="comment-respond js">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="https://janav.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																										
+
+
+												<input id="highlander_comment_nonce" name="highlander_comment_nonce" value="72b3048e97" type="hidden"><input name="_wp_http_referer" value="/2013/10/27/tf-idf-and-cosine-similarity/" type="hidden">
+<input name="hc_post_as" id="hc_post_as" value="guest" type="hidden">
+
+<div class="comment-form-field comment-textarea">
+	
+	<div id="comment-form-comment"><textarea class="autosizejs " tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px none; padding: 0px; box-sizing: content-box; word-wrap: break-word; height: 0px ! important; min-height: 0px ! important; overflow: hidden; transition: none 0s ease 0s ; font-family: Arial,Helvetica,Tahoma,Verdana,sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; text-decoration: none; word-spacing: 0px; text-indent: 0px; line-height: 20px; width: 678px;">Enter your comment here...</textarea><textarea style="height: 40px; overflow: hidden; word-wrap: break-word; resize: none;" placeholder="Enter your comment here..." id="comment" name="comment" title="Enter your comment here..."></textarea></div>
+</div>
+
+<div style="display: none;" id="comment-form-identity">
+
+	<div id="comment-form-nascar">
+		<p>Fill in your details below or click an icon to log in:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" title="Guest">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/a_002.html" scrolling="no" allowtransparency="true" seamless="seamless" frameborder="0" height="24" width="24"></iframe>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/ad516503a11cd5ca435acc9bb6523536.png" alt="Gravatar" class="no-grav" width="25">
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Email <span class="required">(required)</span> <span class="nopublish">(Address never made public)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email"></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(required)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text"></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="text"></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/wplogo.png" alt="WordPress.com Logo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="" type="hidden">
+				<input name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="" type="hidden">
+				<input name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="" type="hidden">
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> You are commenting using your WordPress.com account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'wordpress'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/ad516503a11cd5ca435acc9bb6523536.png" alt="Twitter picture" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" type="hidden">
+				<input name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" type="hidden">
+				<input name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" type="hidden">
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> You are commenting using your Twitter account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'twitter'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/ad516503a11cd5ca435acc9bb6523536.png" alt="Facebook photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" type="hidden">
+				<input name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" type="hidden">
+				<input name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" type="hidden">
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> You are commenting using your Facebook account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'facebook'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/ad516503a11cd5ca435acc9bb6523536.png" alt="Google+ photo" class="no-grav" width="25">
+			</div>
+
+				<div class="comment-form-fields">
+				<input name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" type="hidden">
+				<input name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" type="hidden">
+				<input name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" type="hidden">
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> You are commenting using your Google+ account. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout(%20'googleplus'%20);">Log&nbsp;Out</a>&nbsp;/&nbsp;<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Change</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancel</a></div>
+		<p>Connecting to %s</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div style="display: none;" id="comment-form-subscribe">
+	<p class="comment-subscription-form"><input name="subscribe" id="subscribe" value="subscribe" style="width: auto;" tabindex="6" type="checkbox"> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notify me of new comments via email.</label></p><p class="post-subscription-form"><input name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto;" tabindex="7" type="checkbox"> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog" style="display: inline;">Notify me of new posts via email.</label></p></div>
+
+						
+						<p style="display: none;" class="form-submit"><input name="submit" id="comment-submit" class="submit" value="Post Comment" type="submit"> <input name="comment_post_ID" value="3295" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+</p><p style="display: none;"><input id="akismet_comment_nonce" name="akismet_comment_nonce" value="cc31df4c49" type="hidden"></p>
+<input name="genseq" value="1446561212" type="hidden">
+<p style="display: none;"></p>					<input id="ak_js" name="ak_js" value="1446561217954" type="hidden"></form>
+							</div><!-- #respond -->
+			<div style="clear: both"></div>
+</div><!-- #comments -->
+
+		
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+	<div id="secondary" class="widget-area" role="complementary">
+				<aside id="search-3" class="widget widget_search">	<form method="get" id="searchform" class="searchform" action="https://janav.wordpress.com/" role="search">
+		<label for="s" class="screen-reader-text">Search</label>
+		<input class="field" name="s" id="s" placeholder="Search …" type="search">
+		<input class="submit" id="searchsubmit" value="Search" type="submit">
+	</form>
+</aside><aside id="wp_tag_cloud-2" class="widget wp_widget_tag_cloud"><h1 class="widget-title">Explore</h1><div style="overflow:hidden"><a href="https://janav.wordpress.com/tag/accounting/" class="tag-link-13178" title="8 topics" style="font-size: 12.601398601399pt;">Accounting</a>
+<a href="https://janav.wordpress.com/tag/analysis/" class="tag-link-10544" title="17 topics" style="font-size: 15.636363636364pt;">Analysis</a>
+<a href="https://janav.wordpress.com/tag/association/" class="tag-link-18822" title="2 topics" style="font-size: 8pt;">Association</a>
+<a href="https://janav.wordpress.com/tag/availability/" class="tag-link-405097" title="5 topics" style="font-size: 10.937062937063pt;">Availability</a>
+<a href="https://janav.wordpress.com/tag/berkshire-hathaway/" class="tag-link-15919" title="3 topics" style="font-size: 9.1748251748252pt;">Berkshire Hathaway</a>
+<a href="https://janav.wordpress.com/tag/books/" class="tag-link-178" title="21 topics" style="font-size: 16.41958041958pt;">Books</a>
+<a href="https://janav.wordpress.com/tag/business/" class="tag-link-179" title="34 topics" style="font-size: 18.377622377622pt;">Business</a>
+<a href="https://janav.wordpress.com/tag/charlie-munger/" class="tag-link-761444" title="4 topics" style="font-size: 10.153846153846pt;">Charlie Munger</a>
+<a href="https://janav.wordpress.com/tag/computer-science/" class="tag-link-5043" title="13 topics" style="font-size: 14.559440559441pt;">Computer Science</a>
+<a href="https://janav.wordpress.com/tag/consistency/" class="tag-link-236592" title="3 topics" style="font-size: 9.1748251748252pt;">Consistency</a>
+<a href="https://janav.wordpress.com/tag/economics/" class="tag-link-657" title="8 topics" style="font-size: 12.601398601399pt;">Economics</a>
+<a href="https://janav.wordpress.com/tag/envy-and-jealousy/" class="tag-link-839897" title="2 topics" style="font-size: 8pt;">Envy and Jealousy</a>
+<a href="https://janav.wordpress.com/tag/evolution/" class="tag-link-11940" title="5 topics" style="font-size: 10.937062937063pt;">Evolution</a>
+<a href="https://janav.wordpress.com/tag/finance/" class="tag-link-4269" title="19 topics" style="font-size: 16.027972027972pt;">Finance</a>
+<a href="https://janav.wordpress.com/tag/learning/" class="tag-link-264" title="37 topics" style="font-size: 18.769230769231pt;">Learning</a>
+<a href="https://janav.wordpress.com/tag/mathematics/" class="tag-link-3582" title="19 topics" style="font-size: 16.027972027972pt;">Mathematics</a>
+<a href="https://janav.wordpress.com/tag/mental-models/" class="tag-link-282567" title="80 topics" style="font-size: 22pt;">Mental Models</a>
+<a href="https://janav.wordpress.com/tag/other-models/" class="tag-link-1243436" title="3 topics" style="font-size: 9.1748251748252pt;">Other Models</a>
+<a href="https://janav.wordpress.com/tag/psychology/" class="tag-link-4909" title="30 topics" style="font-size: 17.888111888112pt;">Psychology</a>
+<a href="https://janav.wordpress.com/tag/reading/" class="tag-link-1473" title="9 topics" style="font-size: 13.090909090909pt;">Reading</a>
+<a href="https://janav.wordpress.com/tag/real-estate/" class="tag-link-3225" title="3 topics" style="font-size: 9.1748251748252pt;">Real Estate</a>
+<a href="https://janav.wordpress.com/tag/recommender-systems/" class="tag-link-476583" title="4 topics" style="font-size: 10.153846153846pt;">Recommender Systems</a>
+<a href="https://janav.wordpress.com/tag/role-models/" class="tag-link-38987" title="5 topics" style="font-size: 10.937062937063pt;">Role Models</a>
+<a href="https://janav.wordpress.com/tag/statistics/" class="tag-link-5849" title="9 topics" style="font-size: 13.090909090909pt;">Statistics</a>
+<a href="https://janav.wordpress.com/tag/teaching/" class="tag-link-1591" title="3 topics" style="font-size: 9.1748251748252pt;">Teaching</a>
+<a href="https://janav.wordpress.com/tag/thinking/" class="tag-link-3786" title="10 topics" style="font-size: 13.482517482517pt;">Thinking</a>
+<a href="https://janav.wordpress.com/tag/valuation/" class="tag-link-37820" title="7 topics" style="font-size: 12.111888111888pt;">Valuation</a>
+<a href="https://janav.wordpress.com/tag/warren-buffett/" class="tag-link-15920" title="5 topics" style="font-size: 10.937062937063pt;">Warren Buffett</a>
+<a href="https://janav.wordpress.com/tag/why/" class="tag-link-11250" title="3 topics" style="font-size: 9.1748251748252pt;">Why</a>
+<a href="https://janav.wordpress.com/tag/writing/" class="tag-link-349" title="3 topics" style="font-size: 9.1748251748252pt;">Writing</a></div></aside><aside id="text-2" class="widget widget_text">			<div class="textwidget"><iframe data-screen-name="jvembuna" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/follow_button.html" title="Twitter Follow Button" style="position: static; visibility: visible; width: 212px; height: 20px;" class="twitter-follow-button twitter-follow-button-rendered" allowtransparency="true" scrolling="no" id="twitter-widget-0" frameborder="0"></iframe>
+
+<a href="https://janav.files.wordpress.com/2014/09/jana21.png"><img class="alignnone size-full wp-image-57" alt="My Picture" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/jana21.png" height="200" width="200"></a></div>
+		</aside><aside id="blog_subscription-2" class="widget widget_blog_subscription"><h1 class="widget-title"><label for="subscribe-field">Follow Blog via Email</label></h1>
+				<form action="https://subscribe.wordpress.com" method="post" accept-charset="utf-8" id="subscribe-blog">
+											<p>Enter your email address to follow this blog and receive notifications of new posts by email.</p>
+<p>Join 1,619 other followers</p>
+						<p><input name="email" style="width: 95%; padding: 1px 2px" placeholder="Enter your email address" id="subscribe-field" type="text"></p>
+					
+					<p>
+						<input name="action" value="subscribe" type="hidden">
+						<input name="blog_id" value="8483731" type="hidden">
+						<input name="source" value="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/" type="hidden">
+						<input name="sub-type" value="widget" type="hidden">
+						<input name="redirect_fragment" value="blog_subscription-2" type="hidden">
+						<input id="_wpnonce" name="_wpnonce" value="435099b613" type="hidden">						<input value="Follow" type="submit">
+					</p>
+				</form>
+			
+</aside>	</div><!-- #secondary -->
+	</div><!-- #main -->
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		<div class="site-info">
+			<a href="https://wordpress.com/?ref=footer_blog">Blog at WordPress.com</a>.
+<a href="https://wordpress.com/themes/expound/" title="Learn more about this theme">The Expound Theme</a>.		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<!-- wpcom_wp_footer -->
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/gprofiles.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/wpgroho.js"></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	<div class="grofile-hash-map-94766e39d1f55bb582a28d3cf8abee90">
+	</div>
+	<div class="grofile-hash-map-7c9a259a36ad8575ccc10e2ff12f225e">
+	</div>
+	<div class="grofile-hash-map-0b90f00a88aaaff62fe430a0358d1a85">
+	</div>
+	<div class="grofile-hash-map-ccbe91871631ecd55526f52161d5cc96">
+	</div>
+	<div class="grofile-hash-map-7589aabf0723fdcccc118e0f4bd931c8">
+	</div>
+	<div class="grofile-hash-map-6aa464ab01e76716bb23df32008297c5">
+	</div>
+	<div class="grofile-hash-map-53fd4d82cc8be4f87b6831287cfd53c0">
+	</div>
+	<div class="grofile-hash-map-28749b6d53a4b9e79581c4331f04248a">
+	</div>
+	<div class="grofile-hash-map-08ea46ffadbb835f148dfebe9ececa1e">
+	</div>
+	<div class="grofile-hash-map-bedcba3d1bfa68236cdd7a42d2841af0">
+	</div>
+	<div class="grofile-hash-map-34fb2e50a674817a0f51c36e8aa52571">
+	</div>
+	<div class="grofile-hash-map-d78fdea690691652672fa8b64395ade8">
+	</div>
+	<div class="grofile-hash-map-74900a3c9ef8522e1d77e2af6d4c3235">
+	</div>
+	<div class="grofile-hash-map-c2d9c5102cd46acadb4d7ef1d9d662d4">
+	</div>
+	<div class="grofile-hash-map-4ac8ab0ea1713aade93c947624114129">
+	</div>
+	<div class="grofile-hash-map-b20aeb6359542e38e4642d1031de5ca6">
+	</div>
+	<div class="grofile-hash-map-1498249dd92a15d59aaae03f8f8cadad">
+	</div>
+	<div class="grofile-hash-map-f60a837255b48ab493e46f8faf9fc5e7">
+	</div>
+	<div class="grofile-hash-map-bc856d01ebb401685e80aee2becf8abd">
+	</div>
+	<div class="grofile-hash-map-08500ca40993e046b73c249fe8708b4c">
+	</div>
+	<div class="grofile-hash-map-f422cb179fee1a8f956a83dba8fcf0ff">
+	</div>
+	<div class="grofile-hash-map-453e2e06c2eb08e8f528ab23c2cdcdaf">
+	</div>
+	<div class="grofile-hash-map-356d2b112b76cce74af9a0b0dfd2d6f6">
+	</div>
+	<div class="grofile-hash-map-6361eda331c15067970c591f3e0845f1">
+	</div>
+	<div class="grofile-hash-map-cf4f51a5a04c752a27f1a245566242da">
+	</div>
+	<div class="grofile-hash-map-89fc08471e901ab0e4da8160a0bc1065">
+	</div>
+	<div class="grofile-hash-map-1e34fa5c80b409aa467bfb6352942214">
+	</div>
+	<div class="grofile-hash-map-19bba62ec858fa9150416a7bed8229db">
+	</div>
+	<div class="grofile-hash-map-13d8eccfd06c43a7ef08b09a5ae47ac7">
+	</div>
+	<div class="grofile-hash-map-a7c213f8bdfd46c4319b77997f2abf32">
+	</div>
+	<div class="grofile-hash-map-59ee58acf9d3e17857702f80189c4cc3">
+	</div>
+	<div class="grofile-hash-map-cead68f3521f3929592bd463f88a5b6d">
+	</div>
+	<div class="grofile-hash-map-045c6ba746ec62c3b2f061bf1aea1134">
+	</div>
+	<div class="grofile-hash-map-7e0f149b9b636b8270f741f93e518433">
+	</div>
+	</div>
+<script type="text/javascript">
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"https:\/\/janav.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"https:\/\/janav.wordpress.com\/wp-login.php?action=logout&_wpnonce=d57852a99f","homeURL":"https:\/\/janav.wordpress.com\/","postID":"3295","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"","userIsLoggedIn":"","isJetpack":"0","text_direction":"ltr"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/a_003"></script>
+
+	<div style="bottom: -283px;" id="bit" class="loggedout-follow-normal">
+		<a class="bsub" href="javascript:void(0)"><span id="bsub-text">Follow</span></a>
+		<div id="bitsubscribe">
+
+					<h3><label for="loggedout-follow-field">Follow “Seeking Wisdom”</label></h3>
+
+			<form action="https://subscribe.wordpress.com" method="post" accept-charset="utf-8" id="loggedout-follow">
+			<p>Get every new post delivered to your Inbox.</p>
+
+			<p id="loggedout-follow-error" style="display: none;"></p>
+
+						<p class="bit-follow-count">Join 1,619 other followers</p>
+			<p><input name="email" placeholder="Enter your email address" id="loggedout-follow-field" type="email"></p>
+
+			<input name="action" value="subscribe" type="hidden">
+			<input name="blog_id" value="8483731" type="hidden">
+			<input name="source" value="https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/" type="hidden">
+			<input name="sub-type" value="loggedout-follow" type="hidden">
+
+			<input id="_wpnonce" name="_wpnonce" value="435099b613" type="hidden"><input name="_wp_http_referer" value="/2013/10/27/tf-idf-and-cosine-similarity/" type="hidden">
+			<p id="bsub-subscribe-button"><input value="Sign me up" type="submit"></p>
+			</form>
+					<div id="bsub-credit"><a href="https://wordpress.com/?ref=lof">Build a website with WordPress.com</a></div>
+		</div><!-- #bitsubscribe -->
+	</div><!-- #bit -->
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/janav.wordpress.com\/2013\/10\/27\/tf-idf-and-cosine-similarity\/":3295};
+	</script>
+		<script type="text/javascript">
+			var windowOpen;
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-twitter' ).on( 'click', function() {
+				if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+			var windowOpen;
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-linkedin' ).on( 'click', function() {
+				if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+			var windowOpen;
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-facebook' ).on( 'click', function() {
+				if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+				<iframe src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/master.html" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
+		<div id="likes-other-gravatars"><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		<script type="text/javascript">
+		//<![CDATA[
+			var jetpackLikesWidgetQueue = [];
+			var jetpackLikesWidgetBatch = [];
+			var jetpackLikesMasterReady = false;
+
+			function JetpackLikespostMessage( message, target ) {
+				if ( "string" === typeof message ){
+					try{
+						message = JSON.parse( message );
+					}
+					catch(e) {
+						return;
+					}
+				}
+
+				pm( {
+					target: target,
+					type: 'likesMessage',
+					data: message,
+					origin: '*'
+				} );
+			}
+
+			function JetpackLikesBatchHandler() {
+				var requests = [];
+				jQuery( 'div.jetpack-likes-widget-unloaded' ).each( function( i ) {
+					if ( jetpackLikesWidgetBatch.indexOf( this.id ) > -1 )
+						return;
+					jetpackLikesWidgetBatch.push( this.id );
+					var regex = /like-(post|comment)-wrapper-(\d+)-(\d+)-(\w+)/;
+					var match = regex.exec( this.id );
+					if ( ! match || match.length != 5 )
+						return;
+
+					var info = {
+						blog_id: match[2],
+						width:   this.width
+					};
+
+					if ( 'post' == match[1] ) {
+						info.post_id = match[3];
+					} else if ( 'comment' == match[1] ) {
+						info.comment_id = match[3];
+					}
+
+					info.obj_id = match[4];
+
+					requests.push( info );
+				});
+
+				if ( requests.length > 0 ) {
+					JetpackLikespostMessage( { event: 'initialBatch', requests: requests }, window.frames['likes-master'] );
+				}
+			}
+
+			function JetpackLikesMessageListener( event ) {
+				if ( "undefined" == typeof event.event )
+					return;
+
+				if ( 'masterReady' == event.event ) {
+					jQuery( document ).ready( function() {
+						jetpackLikesMasterReady = true;
+
+						var stylesData = {
+								event: 'injectStyles'
+						};
+
+						if ( jQuery( 'iframe.admin-bar-likes-widget' ).length > 0 ) {
+							JetpackLikespostMessage( { event: 'adminBarEnabled' }, window.frames[ 'likes-master' ] );
+
+							stylesData.adminBarStyles = {
+								background: jQuery( '#wpadminbar .quicklinks li#wp-admin-bar-wpl-like > a' ).css( 'background' ),
+								isRtl: ( 'rtl' == jQuery( '#wpadminbar' ).css( 'direction' ) )
+							};
+						}
+
+						if ( !window.addEventListener )
+							jQuery( '#wp-admin-bar-admin-bar-likes-widget' ).hide();
+
+						stylesData.textStyles = {
+							color: jQuery( '.sd-text-color').css( 'color' ),
+							fontFamily: jQuery( '.sd-text-color' ).css( 'font-family' ),
+							fontSize: jQuery( '.sd-text-color' ).css( 'font-size' ),
+							direction: jQuery( '.sd-text-color' ).css( 'direction' ),
+							fontWeight: jQuery( '.sd-text-color' ).css( 'font-weight' ),
+							fontStyle: jQuery( '.sd-text-color' ).css( 'font-style' ),
+							textDecoration: jQuery( '.sd-text-color' ).css('text-decoration')
+						};
+
+						stylesData.linkStyles = {
+							color: jQuery( '.sd-link-color' ).css('color'),
+							fontFamily: jQuery( '.sd-link-color' ).css('font-family'),
+							fontSize: jQuery( '.sd-link-color' ).css('font-size'),
+							textDecoration: jQuery( '.sd-link-color' ).css('text-decoration'),
+							fontWeight: jQuery( '.sd-link-color' ).css( 'font-weight' ),
+							fontStyle: jQuery( '.sd-link-color' ).css( 'font-style' )
+						};
+
+						JetpackLikespostMessage( stylesData, window.frames[ 'likes-master' ] );
+
+						JetpackLikesBatchHandler();
+
+						jQuery( document ).on( 'inview', 'div.jetpack-likes-widget-unloaded', function() {
+							jetpackLikesWidgetQueue.push( this.id );
+						});
+					});
+				}
+
+				if ( 'showLikeWidget' == event.event ) {
+					jQuery( '#' + event.id + ' .post-likes-widget-placeholder'  ).fadeOut( 'fast', function() {
+						jQuery( '#' + event.id + ' .post-likes-widget' ).fadeIn( 'fast', function() {
+							JetpackLikespostMessage( { event: 'likeWidgetDisplayed', blog_id: event.blog_id, post_id: event.post_id, obj_id: event.obj_id }, window.frames['likes-master'] );
+						});
+					});
+				}
+
+				if ( 'clickReblogFlair' == event.event ) {
+					wpcom_reblog.toggle_reblog_box_flair( event.obj_id );
+				}
+
+				if ( 'showOtherGravatars' == event.event ) {
+					var $container = jQuery( '#likes-other-gravatars' );
+					var $list = $container.find( 'ul' );
+
+					$container.hide();
+					$list.html( '' );
+
+					$container.find( '.likes-text span' ).text( event.total );
+
+					jQuery.each( event.likers, function( i, liker ) {
+						$list.append( '<li class="' + liker.css_class + '"><a href="' + liker.profile_URL + '" class="wpl-liker" rel="nofollow" target="_parent"><img src="' + liker.avatar_URL + '" alt="' + liker.name + '" width="30" height="30" style="padding-right: 3px;" /></a></li>');
+					} );
+
+					var offset = jQuery( "[name='" + event.parent + "']" ).offset();
+
+					$container.css( 'left', offset.left + event.position.left - 10 + 'px' );
+					$container.css( 'top', offset.top + event.position.top - 33 + 'px' );
+
+					var rowLength = Math.floor( event.width / 37 );
+					var height = ( Math.ceil( event.likers.length / rowLength ) * 37 ) + 13;
+					if ( height > 204 ) {
+						height = 204;
+					}
+
+					$container.css( 'height', height + 'px' );
+					$container.css( 'width', rowLength * 37 - 7 + 'px' );
+
+					$list.css( 'width', rowLength * 37 + 'px' );
+
+					$container.fadeIn( 'slow' );
+
+					var scrollbarWidth = $list[0].offsetWidth - $list[0].clientWidth;
+					if ( scrollbarWidth > 0 ) {
+						$container.width( $container.width() + scrollbarWidth );
+						$list.width( $list.width() + scrollbarWidth );
+					}
+				}
+			}
+
+			pm.bind( 'likesMessage', function(e) { JetpackLikesMessageListener(e); } );
+
+			jQuery( document ).click( function( e ) {
+				var $container = jQuery( '#likes-other-gravatars' );
+
+				if ( $container.has( e.target ).length === 0 ) {
+					$container.fadeOut( 'slow' );
+				}
+			});
+
+			function JetpackLikesWidgetQueueHandler() {
+				var wrapperID;
+				if ( ! jetpackLikesMasterReady ) {
+					setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+					return;
+				}
+
+				if ( jetpackLikesWidgetQueue.length > 0 ) {
+					// We may have a widget that needs creating now
+					var found = false;
+					while( jetpackLikesWidgetQueue.length > 0 ) {
+						// Grab the first member of the queue that isn't already loading.
+						wrapperID = jetpackLikesWidgetQueue.splice( 0, 1 )[0];
+						if ( jQuery( '#' + wrapperID ).hasClass( 'jetpack-likes-widget-unloaded' ) ) {
+							found = true;
+							break;
+						}
+					}
+					if ( ! found ) {
+						setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+						return;
+					}
+				} else if ( jQuery( 'div.jetpack-likes-widget-unloaded' ).length > 0 ) {
+					// Grab any unloaded widgets for a batch request
+					JetpackLikesBatchHandler();
+
+					// Get the next unloaded widget
+					wrapperID = jQuery( 'div.jetpack-likes-widget-unloaded' ).first()[0].id;
+					if ( ! wrapperID ) {
+						// Everything is currently loaded
+						setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+						return;
+					}
+				}
+
+				if ( 'undefined' === typeof wrapperID ) {
+					setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+					return;
+				}
+
+				var $wrapper = jQuery( '#' + wrapperID );
+				$wrapper.find( 'iframe' ).remove();
+
+				if ( $wrapper.hasClass( 'slim-likes-widget' ) ) {
+					$wrapper.find( '.post-likes-widget-placeholder' ).after( "<iframe class='post-likes-widget jetpack-likes-widget' name='" + $wrapper.data( 'name' ) + "' height='22px' width='68px' frameBorder='0' scrolling='no' src='" + $wrapper.data( 'src' ) + "'></iframe>" );
+				} else {
+					$wrapper.find( '.post-likes-widget-placeholder' ).after( "<iframe class='post-likes-widget jetpack-likes-widget' name='" + $wrapper.data( 'name' ) + "' height='55px' width='100%' frameBorder='0' src='" + $wrapper.data( 'src' ) + "'></iframe>" );
+				}
+
+				$wrapper.removeClass( 'jetpack-likes-widget-unloaded' ).addClass( 'jetpack-likes-widget-loading' );
+
+				$wrapper.find( 'iframe' ).load( function( e ) {
+					var $iframe = jQuery( e.target );
+					$wrapper.removeClass( 'jetpack-likes-widget-loading' ).addClass( 'jetpack-likes-widget-loaded' );
+
+					JetpackLikespostMessage( { event: 'loadLikeWidget', name: $iframe.attr( 'name' ), width: $iframe.width() }, window.frames[ 'likes-master' ] );
+
+					if ( $wrapper.hasClass( 'slim-likes-widget' ) ) {
+						$wrapper.find( 'iframe' ).Jetpack( 'resizeable' );
+					}
+				});
+				setTimeout( JetpackLikesWidgetQueueHandler, 250 );
+			}
+			JetpackLikesWidgetQueueHandler();
+		//]]>
+		</script>
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/form.js"></script>
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/widgets.js"></script>
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/a_002"></script>
+<script type="text/javascript">
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "https://s0.wp.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "https://s0.wp.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?m=1363304414g&amp;ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = '+ expand source';
+	SyntaxHighlighter.config.strings.help = '?';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = 'Can\'t find brush for: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'Brush wasn\'t configured for html-script option: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var JetpackEmojiSettings = {"base_url":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/emoji\/twemoji\/"};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/a"></script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script><script src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/w.js" type="text/javascript" async="" defer="defer"></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'8483731','blog_tz':'-8','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'8483731','v':'wpcom','tz':'-8','user_id':'0','post':'3295','subd':'janav'}]);
+_stq.push(['extra', {'crypt':'UE5XaGUuOTlwaD85flAmcm1mcmZsaDhkV11YdWFnNncxc1tjZG9XVXhRdC5QY2ZQY1U1P1R0RWg3b1swTXg4R1NiL0Q5P08zJjgydSZhT2haNHV6UD98P35JdTgmcmo1aVtDWy5aWVAzVnY5LDc5PU9NZ0J1eTIwRTVIRDFBM3BbMFF+TWpXWE89dXNHS1RmUThmV3RXSTI9VmRzNjAsbitRMiY3fHNdPWpialgrS25EV1tyPTglY0QmcldfdE4mK2VQYXNiTFYmVD1SZF1+Wlc9clllMXxleDBOZ3ZjZD1pSDZEXTRnQkF0X2IyW09lLFl+NkQ/ek5fcHU9NEZrdllLTFMtbDYudF9Zek81THhjR25zVGVPQnYyNERaR2gu'}]);
+_stq.push([ 'clickTrackerInit', '8483731', '3295' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+
+<img id="wpstats" src="Tf-Idf%20and%20Cosine%20similarity%20%7C%20Seeking%20Wisdom_files/g.gif"></body></html>
