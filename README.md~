@@ -14,3 +14,6 @@ These results illustrate why TF-IDF is useful for finding important words.
 In the sample notebook, we built a nearest neighbors model for retrieving articles using TF-IDF as features and using the default setting in the construction of the nearest neighbors model.
 Now, we build two nearest neighbors models
 
+Tf-Idf and Cosine similarity | Seeking Wisdom.htmlis file for understanding Cosine Similarity and TF-ifd clearly.
+
+Credits to https://janav.wordpress.com/2013/10/27/tf-idf-and-cosine-similarity/ for such clear explanation.
